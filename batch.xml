@@ -1,0 +1,26 @@
+<suite name="Vtiger Batch Suite" verbose="1">
+	<test name="All Vtiger Modules">
+		<classes>
+			<class name="dashboard.DashboardFunctionalTest" />
+			<class name="dashboard.DashboardBVATest" />
+			<class name="dashboard.DashboardIntegrationTest" />
+			<class name="dashboard.DashboardNegativeTest" />
+			<class name="dashboard.DashboardSmokeTest" />
+			<class name="dashboard.DashboardSystemTest" />
+			<class name="Campaign.CampaignFunctionalTest" />
+			<class name="Campaign.CampaignBVATest" />
+			<class name="Campaign.CampaignIntegrationTest" />
+			<class name="Campaign.CampaignNegativeTest" />
+			<class name="Campaign.CampaignSmokeTest" />
+			<class name="Campaign.CampaignSystemTest" />
+			<class name="leads.LeadsBVATest" />
+			<class name="leads.LeadsNegativeTest" />
+			<class name="leads.LeadsSmokeTest" />
+			<class name="TroubleTickets.TroubleTicketsFunctionalTest" />
+			<class name="TroubleTickets.TroubleTicketsIntegrationTest" />
+			<class name="TroubleTickets.TroubleNegativeTest" />
+			<class name="TroubleTickets.TroubleTicketsSmokeTest" />
+			<class name="TroubleTickets.TroubleTicketsSystemTest" />
+		</classes>
+	</test>
+</suite>

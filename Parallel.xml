@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Vtiger Parallel Suite"
+       verbose="1"
+       parallel="classes"
+       thread-count="4">
+
+    <test name="All Module Tests">
+        <classes>
+            <class name="dashboard.DashboardBVATest"/>
+            <class name="dashboard.DashboardFunctionalTest"/>
+            <class name="dashboard.DashboardIntegrationTest"/>
+            <class name="dashboard.DashboardNegativeTest"/>
+            <class name="dashboard.DashboardSmokeTest"/>
+            <class name="dashboard.DashboardSystemTest"/>
+
+            <class name="Campaign.CampaignBVATest"/>
+            <class name="Campaign.CampaignFunctionalTest"/>
+            <class name="Campaign.CampaignIntegrationTest"/>
+            <class name="Campaign.CampaignNegativeTest"/>
+            <class name="Campaign.CampaignSmokeTest"/>
+            <class name="Campaign.CampaignSystemTest"/>
+
+            <class name="leads.LeadsBVATest"/>
+            <class name="leads.LeadsNegativeTest"/>
+            <class name="leads.LeadsSmokeTest"/>
+
+            <class name="TroubleTickets.TroubleNegativeTest"/>
+            <class name="TroubleTickets.TroubleTicketsBVATest"/>
+            <class name="TroubleTickets.TroubleTicketsFunctionalTest"/>
+            <class name="TroubleTickets.TroubleTicketsIntegrationTest"/>
+            <class name="TroubleTickets.TroubleTicketsSmokeTest"/>
+            <class name="TroubleTickets.TroubleTicketsSystemTest"/>
+        </classes>
+    </test>
+
+</suite>
