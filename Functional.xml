@@ -9,7 +9,6 @@
                 <include name="Functional"/>
             </run>
         </groups>
-
         <packages>
             <package name="dashboard"/>
             <package name="Campaign"/>
@@ -17,7 +16,6 @@
             <package name="TroubleTickets"/>
         </packages>
     </test>
-
 </suite>
 
 

@@ -1,167 +1,71 @@
 package com.vtiger.objRepo;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 public class CampaignPage {
+    private WebDriver driver;
 
-    WebDriver driver;
+    private By moreButton = By.xpath("//a[contains(normalize-space(.),'More')]");
+    private By campaignsLink = By.xpath("//a[normalize-space()='Campaigns' or contains(@href,'module=Campaigns')]");
+    private By createButton = By.xpath("//img[@title='Create Campaign...' or contains(@alt,'Create Campaign')]");
+    private By campaignName = By.name("campaignname");
+    private By assignedTo = By.name("assigned_user_id");
+    private By campaignStatus = By.name("campaignstatus");
+    private By campaignType = By.name("campaigntype");
+    private By closingDate = By.name("closingdate");
+    private By saveButton = By.cssSelector("input.crmbutton.small.save");
 
     public CampaignPage(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver, this);
     }
 
-    @FindBy(xpath = "//a[contains(text(),'More')]")
-    private WebElement moreButton;
-
-    @FindBy(xpath = "//a[normalize-space()='Campaigns']")
-    private WebElement campaignsLink;
-
-    @FindBy(xpath = "//img[@title='Create Campaign...']")
-    private WebElement createCampaignButton;
-
-    @FindBy(name = "campaignname")
-    private WebElement campaignName;
-
-    @FindBy(xpath = "//select[@name='assigned_user_id']")
-    private WebElement assignedTo;
-
-    @FindBy(name = "campaignstatus")
-    private WebElement campaignStatus;
-
-    @FindBy(name = "campaigntype")
-    private WebElement campaignType;
-
-    @FindBy(name = "closingdate")
-    private WebElement closingDate;
-
-    @FindBy(css = "input.crmbutton.small.save")
-    private WebElement saveButton;
-
-
     public void clickCampaigns() {
-        moreButton.click();
-        campaignsLink.click();
+        if (driver.getCurrentUrl().contains("module=Campaigns")) return;
+
+        if (driver.findElements(campaignsLink).size() > 0
+                && driver.findElement(campaignsLink).isDisplayed()) {
+            driver.findElement(campaignsLink).click();
+        } else {
+            driver.findElement(moreButton).click();
+            driver.findElement(campaignsLink).click();
+        }
     }
 
     public void clickCreateCampaign() {
-        createCampaignButton.click();
+        driver.findElement(createButton).click();
     }
 
-    public void enterCampaignName(String value) {
+    public void enterCampaignName(String value) { type(campaignName, value); }
+    public void enterClosingDate(String value) { type(closingDate, value); }
+
+    private void type(By locator, String value) {
         if (value != null && !value.trim().isEmpty()) {
-            campaignName.clear();
-            campaignName.sendKeys(value);
-        }
-    }
-
-    public void selectAssignedTo(String value) {
-
-        if (value != null && !value.trim().isEmpty()) {
-
-            org.openqa.selenium.support.ui.Select select = new org.openqa.selenium.support.ui.Select(assignedTo);
-
-            for (WebElement option : select.getOptions()) {
-
-                if (option.getText().trim()
-                        .equalsIgnoreCase(value.trim())) {
-
-                    select.selectByValue(
-                            option.getAttribute("value")
-                    );
-
-                    return;
-                }
-            }
-
-            throw new RuntimeException(
-                    "Assigned To option not found: " + value
-            );
+            driver.findElement(locator).clear();
+            driver.findElement(locator).sendKeys(value.trim());
         }
     }
 
-    public void selectCampaignStatus(String value) {
+    public void selectAssignedTo(String value) { selectOption(assignedTo, value); }
+    public void selectCampaignStatus(String value) { selectOption(campaignStatus, value); }
+    public void selectCampaignType(String value) { selectOption(campaignType, value); }
 
+    private void selectOption(By locator, String value) {
         if (value != null && !value.trim().isEmpty()) {
-
-            org.openqa.selenium.support.ui.Select select =
-                    new org.openqa.selenium.support.ui.Select(campaignStatus);
-
-            for (WebElement option : select.getOptions()) {
-
-                if (option.getText().trim()
-                        .equalsIgnoreCase(value.trim())) {
-
-                    select.selectByValue(
-                            option.getAttribute("value")
-                    );
-
-                    return;
-                }
-            }
-
-            throw new RuntimeException(
-                    "Campaign Status option not found: " + value
-            );
+            new Select(driver.findElement(locator)).selectByVisibleText(value.trim());
         }
     }
 
-    public void selectCampaignType(String value) {
-
-        if (value != null && !value.trim().isEmpty()) {
-
-        org.openqa.selenium.support.ui.Select select =
-                new org.openqa.selenium.support.ui.Select(campaignType);
-
-        for (WebElement option : select.getOptions()) {
-
-            String optionText = option.getText().trim();
-
-            if (optionText.equalsIgnoreCase(value.trim())) {
-                select.selectByValue(option.getAttribute("value"));
-                return;
-            }
-        }
-
-        StringBuilder availableOptions = new StringBuilder();
-
-        System.out.println("Available campaign types:");
-
-        for (WebElement option : select.getOptions()) {
-            String optionText = option.getText().trim();
-
-            System.out.println(optionText);
-            availableOptions.append(optionText).append(", ");
-        }
-
-        throw new RuntimeException(
-                "Campaign Type option not found: " + value
-                + ". Available options: " + availableOptions
-        );
-    }
-}
-
-
-
-    public void enterClosingDate(String value) {
-
-        if (value != null && !value.trim().isEmpty()) {
-            closingDate.clear();
-            closingDate.sendKeys(value);
-        }
+    public void clearAssignedTo() {
+        new Select(driver.findElement(assignedTo)).selectByIndex(0);
     }
 
     public void clickSave() {
-        saveButton.click();
+        driver.findElement(saveButton).click();
     }
-    public void clearAssignedTo() {
-        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
-            "var select = document.getElementsByName('assigned_user_id')[0];" +
-            "select.value = '';" +
-            "select.dispatchEvent(new Event('change'));"
-        );
+
+    public boolean isCampaignNameFieldDisplayed() {
+        return driver.findElement(campaignName).isDisplayed();
     }
 }

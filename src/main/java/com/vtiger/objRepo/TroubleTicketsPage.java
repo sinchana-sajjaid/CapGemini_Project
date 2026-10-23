@@ -1,220 +1,71 @@
 package com.vtiger.objRepo;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 public class TroubleTicketsPage {
+    private WebDriver driver;
 
-    WebDriver driver;
+    private By moreMenu = By.xpath("//a[contains(normalize-space(.),'More')]");
+    private By ticketsLink = By.xpath("//a[normalize-space()='Trouble Tickets' or contains(@href,'module=HelpDesk')]");
+    private By createButton = By.xpath("//img[contains(@title,'Create') or contains(@alt,'Create')]");
+    private By ticketTitle = By.name("ticket_title");
+    private By assignedTo = By.name("assigned_user_id");
+    private By priority = By.name("ticketpriorities");
+    private By severity = By.name("ticketseverities");
+    private By status = By.name("ticketstatus");
+    private By category = By.name("ticketcategories");
+    private By description = By.name("description");
+    private By saveButton = By.cssSelector("input.crmbutton.small.save");
 
     public TroubleTicketsPage(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver, this);
     }
-
-    @FindBy(xpath = "//a[contains(normalize-space(.),'More')]")
-    private WebElement moreMenu;
-
-    @FindBy(xpath = "//a[normalize-space(.)='Trouble Tickets']")
-    private WebElement troubleTicketsLink;
-
-    @FindBy(xpath = "//img[contains(@title,'Create') or contains(@alt,'Create')]")
-    private WebElement createTicketButton;
-
-    @FindBy(name = "ticket_title")
-    private WebElement ticketTitle;
-
-    @FindBy(xpath = "//select[@name='assigned_user_id']")
-    private WebElement assignedTo;
-
-    @FindBy(name = "ticketpriorities")
-    private WebElement priority;
-
-    @FindBy(name = "ticketseverities")
-    private WebElement severity;
-
-    @FindBy(name = "ticketstatus")
-    private WebElement status;
-
-    @FindBy(name = "ticketcategories")
-    private WebElement category;
-
-    @FindBy(name = "description")
-    private WebElement description;
-
-    @FindBy(css = "input.crmbutton.small.save")
-    private WebElement saveButton;
-
 
     public void clickTroubleTickets() {
+        if (driver.getCurrentUrl().contains("module=HelpDesk")) return;
 
-        moreMenu.click();
-
-        troubleTicketsLink.click();
+        if (driver.findElements(ticketsLink).size() > 0
+                && driver.findElement(ticketsLink).isDisplayed()) {
+            driver.findElement(ticketsLink).click();
+        } else {
+            driver.findElement(moreMenu).click();
+            driver.findElement(ticketsLink).click();
+        }
     }
-
 
     public void clickCreateTicket() {
-
-        createTicketButton.click();
+        driver.findElement(createButton).click();
     }
 
+    public void enterTicketTitle(String value) { type(ticketTitle, value); }
+    public void enterDescription(String value) { type(description, value); }
 
-    public void enterTicketTitle(String value) {
-
+    private void type(By locator, String value) {
         if (value != null && !value.trim().isEmpty()) {
-
-            ticketTitle.clear();
-            ticketTitle.sendKeys(value);
+            driver.findElement(locator).clear();
+            driver.findElement(locator).sendKeys(value.trim());
         }
     }
 
+    public void selectAssignedTo(String value) { selectOption(assignedTo, value); }
+    public void selectPriority(String value) { selectOption(priority, value); }
+    public void selectSeverity(String value) { selectOption(severity, value); }
+    public void selectStatus(String value) { selectOption(status, value); }
+    public void selectCategory(String value) { selectOption(category, value); }
 
-    public void selectAssignedTo(String value) {
-
+    private void selectOption(By locator, String value) {
         if (value != null && !value.trim().isEmpty()) {
-
-            Select select = new Select(assignedTo);
-
-            for (WebElement option : select.getOptions()) {
-
-                if (option.getText().trim()
-                        .equalsIgnoreCase(value.trim())) {
-
-                    select.selectByValue(
-                            option.getAttribute("value")
-                    );
-
-                    return;
-                }
-            }
-
-            throw new RuntimeException(
-                    "Assigned To option not found: " + value
-            );
+            new Select(driver.findElement(locator)).selectByVisibleText(value.trim());
         }
     }
 
-
-    public void selectPriority(String value) {
-
-        if (value != null && !value.trim().isEmpty()) {
-
-            Select select = new Select(priority);
-
-            for (WebElement option : select.getOptions()) {
-
-                if (option.getText().trim()
-                        .equalsIgnoreCase(value.trim())) {
-
-                    select.selectByValue(
-                            option.getAttribute("value")
-                    );
-
-                    return;
-                }
-            }
-
-            throw new RuntimeException(
-                    "Priority option not found: " + value
-            );
-        }
+    public void clearAssignedTo() {
+        new Select(driver.findElement(assignedTo)).selectByIndex(0);
     }
-
-
-    public void selectSeverity(String value) {
-
-        if (value != null && !value.trim().isEmpty()) {
-
-            Select select = new Select(severity);
-
-            for (WebElement option : select.getOptions()) {
-
-                if (option.getText().trim()
-                        .equalsIgnoreCase(value.trim())) {
-
-                    select.selectByValue(
-                            option.getAttribute("value")
-                    );
-
-                    return;
-                }
-            }
-
-            throw new RuntimeException(
-                    "Severity option not found: " + value
-            );
-        }
-    }
-
-
-    public void selectStatus(String value) {
-
-        if (value != null && !value.trim().isEmpty()) {
-
-            Select select = new Select(status);
-
-            for (WebElement option : select.getOptions()) {
-
-                if (option.getText().trim()
-                        .equalsIgnoreCase(value.trim())) {
-
-                    select.selectByValue(
-                            option.getAttribute("value")
-                    );
-
-                    return;
-                }
-            }
-
-            throw new RuntimeException(
-                    "Status option not found: " + value
-            );
-        }
-    }
-
-
-    public void selectCategory(String value) {
-
-        if (value != null && !value.trim().isEmpty()) {
-
-            Select select = new Select(category);
-
-            for (WebElement option : select.getOptions()) {
-
-                if (option.getText().trim()
-                        .equalsIgnoreCase(value.trim())) {
-
-                    select.selectByValue(
-                            option.getAttribute("value")
-                    );
-
-                    return;
-                }
-            }
-
-            throw new RuntimeException(
-                    "Category option not found: " + value
-            );
-        }
-    }
-
-
-    public void enterDescription(String value) {
-
-        if (value != null && !value.trim().isEmpty()) {
-
-            description.clear();
-            description.sendKeys(value);
-        }
-    }
-
 
     public void clickSave() {
-
-        saveButton.click();
+        driver.findElement(saveButton).click();
     }
 }

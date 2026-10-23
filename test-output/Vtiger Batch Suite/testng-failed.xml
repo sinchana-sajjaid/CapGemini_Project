@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Vtiger Batch Suite]">
+  <test thread-count="5" name="All Vtiger Modules(failed)">
+    <classes>
+      <class name="Campaign.CampaignNegativeTest">
+        <methods>
+          <include name="tearDown"/>
+          <include name="setUp"/>
+          <include name="verifyCampaignWithoutAssignedTo"/>
+        </methods>
+      </class> <!-- Campaign.CampaignNegativeTest -->
+    </classes>
+  </test> <!-- All Vtiger Modules(failed) -->
+</suite> <!-- Failed suite [Vtiger Batch Suite] -->

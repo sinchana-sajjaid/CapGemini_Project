@@ -1,38 +1,31 @@
 package com.vtiger.objRepo;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage {
+    private WebDriver driver;
 
-    WebDriver driver;
+    private By username = By.name("user_name");
+    private By password = By.name("user_password");
+    private By loginButton = By.id("submitButton");
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver, this);
     }
 
-    @FindBy(name = "user_name")
-    private WebElement username;
-
-    @FindBy(name = "user_password")
-    private WebElement password;
-
-    @FindBy(id = "submitButton")
-    private WebElement loginButton;
-
     public void enterUsername(String value) {
-        username.sendKeys(value);
+        driver.findElement(username).clear();
+        driver.findElement(username).sendKeys(value);
     }
 
     public void enterPassword(String value) {
-        password.sendKeys(value);
+        driver.findElement(password).clear();
+        driver.findElement(password).sendKeys(value);
     }
 
     public void clickLogin() {
-        loginButton.click();
+        driver.findElement(loginButton).click();
     }
 
     public void login(String user, String pass) {

@@ -17,8 +17,7 @@
 			<class name="leads.LeadsNegativeTest" />
 			<class name="leads.LeadsSmokeTest" />
 			<class name="TroubleTickets.TroubleTicketsFunctionalTest" />
-			<class name="TroubleTickets.TroubleTicketsIntegrationTest" />
-			<class name="TroubleTickets.TroubleNegativeTest" />
+			<class name="TroubleTickets.TroubleTicketsNegativeTest" />
 			<class name="TroubleTickets.TroubleTicketsSmokeTest" />
 			<class name="TroubleTickets.TroubleTicketsSystemTest" />
 		</classes>
